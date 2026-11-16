@@ -145,6 +145,15 @@ modules:
       render: native
       title: Precedent
       icon: resource:icons;icon.svg
+  jira:issueContext:
+    - key: precedent-context
+      resource: panel
+      resolver:
+        function: resolver-fn
+      render: native
+      title: Precedent
+      label: Decisions
+      icon: resource:icons;icon.svg
   jira:globalPage:
     - key: precedent-register
       resource: register

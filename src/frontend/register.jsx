@@ -163,7 +163,7 @@ function App() {
         <Button appearance="subtle" onClick={() => act('loadSamples', 'Loading samples')} isDisabled={!!busy}>Load sample decisions</Button>
       </ButtonGroup>
       {message && <SectionMessage><Text>{message}</Text></SectionMessage>}
-      {data.sync && <Text><Em>Last sync {data.sync.at}: {data.sync.decisions} decisions from {data.sync.pages} pages.</Em></Text>}
+      {data.sync && <Text><Em>Last sync {new Date(data.sync.at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}: {data.sync.decisions} decisions from {data.sync.pages} pages.</Em></Text>}
       <Tabs id="precedent-tabs">
         <TabList>
           <Tab>Decisions ({data.decisions.length})</Tab>
