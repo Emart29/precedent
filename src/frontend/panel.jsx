@@ -10,15 +10,18 @@ import { invoke } from '@forge/bridge';
 
 const RESPONSE_LABEL = { link: 'Linked to decision', override: 'Proceeding with recorded reason', reopen: 'Decision reopened' };
 
-function People({ people }) {
-  const all = [...(people?.owners || []), ...(people?.contributors || [])];
-  if (!all.length && !people?.teams?.length) return null;
+function People({ people, ownerAccountId }) {
+  // The decision owner comes from the Confluence page itself; Teamwork Graph adds the page's
+  // other owners and contributors, and the owner's teams, when the site allows graph queries.
+  const graphUsers = [...(people?.owners || []), ...(people?.contributors || [])];
+  const ids = [...new Set([ownerAccountId, ...graphUsers.map((u) => u.accountId)].filter(Boolean))];
+  if (!ids.length && !people?.teams?.length) return null;
   return (
     <Stack space="space.050">
-      <Text><Strong>People to talk to first</Strong> (from Teamwork Graph)</Text>
-      {all.length > 0 && (
+      <Text><Strong>People to talk to first</Strong>{graphUsers.length ? ' (decision owner and contributors from Teamwork Graph)' : ' (decision owner)'}</Text>
+      {ids.length > 0 && (
         <UserGroup>
-          {all.slice(0, 6).map((u) => <User key={u.accountId} accountId={u.accountId} />)}
+          {ids.slice(0, 6).map((id) => <User key={id} accountId={id} />)}
         </UserGroup>
       )}
       {people?.teams?.length > 0 && (
@@ -63,7 +66,7 @@ function Finding({ f, issueKey, response, onDone }) {
           {f.sourceUrl && <Link href={f.sourceUrl} openNewTab>Open decision page</Link>}
           {response && <Lozenge appearance="success">{RESPONSE_LABEL[response.action]}</Lozenge>}
         </Inline>
-        <People people={f.people} />
+        <People people={f.people} ownerAccountId={f.decision.ownerAccountId} />
         {!response && !mode && (
           <ButtonGroup>
             <Button onClick={() => respond('link')} isDisabled={busy || !f.sourceUrl}>Link to decision</Button>

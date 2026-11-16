@@ -138,7 +138,7 @@ async function enrich(issueKey, check, responses, visible, cloudId) {
     if (!d) continue; // the viewer cannot see this decision's page
     findings.push({ ...f, decision: svc.summarize(d), sourceUrl: d.source?.url || null, people: await svc.peopleFor(d, cloudId) });
   }
-  return { issueKey, checkedAt: check?.at || null, candidates: check?.candidates || 0, rejectedCount: check?.rejectedCount || 0, findings, responses, decisionCount: visible.length };
+  return { issueKey, checkedAt: check?.at || (check ? 'yes' : null), candidates: check?.candidates || 0, rejectedCount: check?.rejectedCount || 0, findings, responses, decisionCount: visible.length };
 }
 
 resolver.define('respond', async ({ payload, context }) => {

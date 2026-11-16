@@ -52,7 +52,7 @@ export async function setDecisionStatus(id, status, note) {
   return updated;
 }
 
-export const saveCheck = (issueKey, check) => kvs.set(`check:${issueKey}`, { ...check, at: new Date().toISOString() });
+export const saveCheck = (issueKey, check) => kvs.set(`check:${issueKey}`, { at: new Date().toISOString(), ...check });
 export const getCheck = (issueKey) => kvs.get(`check:${issueKey}`);
 
 export const saveResponse = (issueKey, decisionId, response) =>

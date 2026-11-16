@@ -49,6 +49,7 @@ export async function checkIssue(issueKey, { asApp = false, accountId } = {}) {
   const result = await checkWork(issue.text, decisions, chat);
   const check = {
     issueKey,
+    at: new Date().toISOString(),
     findings: result.findings,
     rejectedCount: result.rejected.length,
     candidates: result.candidates,
