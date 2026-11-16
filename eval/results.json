@@ -1,0 +1,619 @@
+{
+  "cases": 51,
+  "withVerification": {
+    "conflict": {
+      "tp": 18,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "revisit": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "falseAlarms": {
+      "cases": 28,
+      "alarmed": 0,
+      "rate": 0,
+      "ids": []
+    }
+  },
+  "withoutVerification": {
+    "conflict": {
+      "tp": 18,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "revisit": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "falseAlarms": {
+      "cases": 28,
+      "alarmed": 0,
+      "rate": 0,
+      "ids": []
+    }
+  },
+  "byGroup": {
+    "conflict": {
+      "cases": 18,
+      "correct": 18
+    },
+    "compatible": {
+      "cases": 16,
+      "correct": 16
+    },
+    "unrelated": {
+      "cases": 10,
+      "correct": 10
+    },
+    "revisit": {
+      "cases": 5,
+      "correct": 5
+    },
+    "lifecycle": {
+      "cases": 2,
+      "correct": 2
+    }
+  },
+  "date": "2026-11-16",
+  "model": "claude-sonnet-4-6",
+  "details": [
+    {
+      "id": "c01",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:payouts"
+      ],
+      "got": [
+        "conflict:sample:payouts"
+      ],
+      "raw": [
+        "conflict:sample:payouts"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c02",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:payouts"
+      ],
+      "got": [
+        "conflict:sample:payouts"
+      ],
+      "raw": [
+        "conflict:sample:payouts"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c03",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:rest"
+      ],
+      "got": [
+        "conflict:sample:rest"
+      ],
+      "raw": [
+        "conflict:sample:rest"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c04",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:rest"
+      ],
+      "got": [
+        "conflict:sample:rest"
+      ],
+      "raw": [
+        "conflict:sample:rest"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c05",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:ledger"
+      ],
+      "got": [
+        "conflict:sample:ledger"
+      ],
+      "raw": [
+        "conflict:sample:ledger"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c06",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:ledger"
+      ],
+      "got": [
+        "conflict:sample:ledger"
+      ],
+      "raw": [
+        "conflict:sample:ledger"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c07",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:mobile"
+      ],
+      "got": [
+        "conflict:sample:mobile"
+      ],
+      "raw": [
+        "conflict:sample:mobile"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c08",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:flags"
+      ],
+      "got": [
+        "conflict:sample:flags"
+      ],
+      "raw": [
+        "conflict:sample:flags"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c09",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:session"
+      ],
+      "got": [
+        "conflict:sample:session"
+      ],
+      "raw": [
+        "conflict:sample:session"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c10",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:session"
+      ],
+      "got": [
+        "conflict:sample:session"
+      ],
+      "raw": [
+        "conflict:sample:session"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c11",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:pii"
+      ],
+      "got": [
+        "conflict:sample:pii"
+      ],
+      "raw": [
+        "conflict:sample:pii"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c12",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:releases"
+      ],
+      "got": [
+        "conflict:sample:releases"
+      ],
+      "raw": [
+        "conflict:sample:releases"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c13",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:support"
+      ],
+      "got": [
+        "conflict:sample:support"
+      ],
+      "raw": [
+        "conflict:sample:support"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c14",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:trial"
+      ],
+      "got": [
+        "conflict:sample:trial"
+      ],
+      "raw": [
+        "conflict:sample:trial"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c15",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:region"
+      ],
+      "got": [
+        "conflict:sample:region"
+      ],
+      "raw": [
+        "conflict:sample:region"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c16",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:otp"
+      ],
+      "got": [
+        "conflict:sample:otp"
+      ],
+      "raw": [
+        "conflict:sample:otp"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c17",
+      "group": "conflict",
+      "expected": [
+        "conflict:sample:opensearch"
+      ],
+      "got": [
+        "conflict:sample:opensearch"
+      ],
+      "raw": [
+        "conflict:sample:opensearch"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "c18",
+      "group": "conflict",
+      "expected": [
+        "conflict:meeting:0"
+      ],
+      "got": [
+        "conflict:meeting:0"
+      ],
+      "raw": [
+        "conflict:meeting:0"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "n01",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n02",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n03",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n04",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n05",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n06",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n07",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n08",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n09",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n10",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n11",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n12",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n13",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n14",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n15",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "n16",
+      "group": "compatible",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "u01",
+      "group": "unrelated",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "u02",
+      "group": "unrelated",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "u03",
+      "group": "unrelated",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "u04",
+      "group": "unrelated",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "u05",
+      "group": "unrelated",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "u06",
+      "group": "unrelated",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "u07",
+      "group": "unrelated",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "u08",
+      "group": "unrelated",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "u09",
+      "group": "unrelated",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "u10",
+      "group": "unrelated",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "r01",
+      "group": "revisit",
+      "expected": [
+        "revisit_signal:sample:payouts"
+      ],
+      "got": [
+        "revisit_signal:sample:payouts"
+      ],
+      "raw": [
+        "revisit_signal:sample:payouts"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "r02",
+      "group": "revisit",
+      "expected": [
+        "revisit_signal:sample:rest"
+      ],
+      "got": [
+        "revisit_signal:sample:rest"
+      ],
+      "raw": [
+        "revisit_signal:sample:rest"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "r03",
+      "group": "revisit",
+      "expected": [
+        "revisit_signal:sample:mobile"
+      ],
+      "got": [
+        "revisit_signal:sample:mobile"
+      ],
+      "raw": [
+        "revisit_signal:sample:mobile"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "r04",
+      "group": "revisit",
+      "expected": [
+        "revisit_signal:sample:region"
+      ],
+      "got": [
+        "revisit_signal:sample:region"
+      ],
+      "raw": [
+        "revisit_signal:sample:region"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "r05",
+      "group": "revisit",
+      "expected": [
+        "revisit_signal:sample:otp"
+      ],
+      "got": [
+        "revisit_signal:sample:otp"
+      ],
+      "raw": [
+        "revisit_signal:sample:otp"
+      ],
+      "rejected": []
+    },
+    {
+      "id": "l01",
+      "group": "lifecycle",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    },
+    {
+      "id": "l02",
+      "group": "lifecycle",
+      "expected": [],
+      "got": [],
+      "raw": [],
+      "rejected": []
+    }
+  ]
+}

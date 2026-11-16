@@ -1,0 +1,218 @@
+modules:
+  rovo:agent:
+    - key: precedent-agent
+      name: Precedent
+      description: Remembers what your team already decided. Flags work that contradicts a decision, with verified quotes, and spots decisions that need revisiting.
+      prompt: resource:prompts;agent.md
+      conversationStarters:
+        - Did we already decide anything about GraphQL?
+        - Does this issue contradict a past decision?
+        - Which decisions may need revisiting?
+        - Record the decision we just made
+      actions:
+        - find-decisions
+        - get-decision
+        - check-issue
+        - check-proposal
+        - find-revisit-signals
+        - record-decision
+        - sync-decisions
+  action:
+    - key: find-decisions
+      name: Find decisions
+      function: find-decisions-fn
+      actionVerb: GET
+      description: Searches the team's recorded decisions for a topic or question, such as "did we decide on GraphQL?". Returns matching decisions with their reasons and links, or says no record was found.
+      inputs:
+        query:
+          title: Topic or question
+          type: string
+          required: true
+          description: The topic or question to look up in the decision log.
+    - key: get-decision
+      name: Get decision
+      function: get-decision-fn
+      actionVerb: GET
+      description: Returns one decision by ID (for example DEC-4) with its reasons, rejected alternatives, revisit conditions and the people and teams who shaped it, from the Teamwork Graph.
+      inputs:
+        decisionId:
+          title: Decision ID
+          type: string
+          required: true
+          description: The decision ID, such as DEC-4.
+    - key: check-issue
+      name: Check issue against decisions
+      function: check-issue-fn
+      actionVerb: GET
+      description: Checks a Jira issue against recorded decisions and returns verified conflicts or revisit signals with exact quotes. Uses the current issue when no key is given.
+      inputs:
+        issueKey:
+          title: Issue key
+          type: string
+          required: false
+          description: The Jira issue key, such as PLAT-123. Optional on an issue page.
+    - key: check-proposal
+      name: Check a proposal
+      function: check-proposal-fn
+      actionVerb: GET
+      description: Checks a proposed change, plan or idea described in text against recorded decisions and returns verified conflicts with exact quotes.
+      inputs:
+        proposal:
+          title: Proposal
+          type: string
+          required: true
+          description: The proposed work or change, in the user's words.
+    - key: find-revisit-signals
+      name: Find decisions to revisit
+      function: revisit-fn
+      actionVerb: GET
+      description: Looks at recent Jira issues for evidence that a decision's "revisit if" conditions have happened, and returns decisions that may need revisiting with quotes.
+      inputs:
+        decisionId:
+          title: Decision ID
+          type: string
+          required: false
+          description: Optional. Review only this decision.
+    - key: record-decision
+      name: Record a decision
+      function: record-decision-fn
+      actionVerb: CREATE
+      description: Records a new team decision so future work is checked against it.
+      inputs:
+        title:
+          title: Title
+          type: string
+          required: true
+          description: Short title of the decision.
+        decision:
+          title: Decision
+          type: string
+          required: true
+          description: What was decided, in one or two sentences.
+        rationale:
+          title: Why
+          type: string
+          required: false
+          description: Why the team decided this.
+        alternatives:
+          title: Alternatives rejected
+          type: string
+          required: false
+          description: Rejected options, separated by semicolons.
+        revisitIf:
+          title: Revisit if
+          type: string
+          required: false
+          description: Conditions that should trigger a review, separated by semicolons.
+        sourceUrl:
+          title: Source link
+          type: string
+          required: false
+          description: Optional link to where the decision was discussed.
+    - key: sync-decisions
+      name: Sync decisions from Confluence
+      function: sync-fn
+      actionVerb: TRIGGER
+      description: Re-reads Confluence pages labelled decision or meeting-notes and updates the decision log.
+      inputs:
+        confirm:
+          title: Confirm
+          type: string
+          required: false
+          description: Not needed; present because actions need an inputs block.
+  rovo:mcp:
+    - key: precedent-mcp
+      name: Precedent decisions
+      tools:
+        - find-decisions
+        - get-decision
+        - check-proposal
+        - find-revisit-signals
+  trigger:
+    - key: issue-created
+      function: issue-created-fn
+      events:
+        - avi:jira:created:issue
+  scheduledTrigger:
+    - key: daily-sync
+      function: scheduled-sync-fn
+      interval: day
+  jira:issuePanel:
+    - key: precedent-panel
+      resource: panel
+      resolver:
+        function: resolver-fn
+      render: native
+      title: Precedent
+      icon: resource:icons;icon.svg
+  jira:globalPage:
+    - key: precedent-register
+      resource: register
+      resolver:
+        function: resolver-fn
+      render: native
+      title: Precedent decisions
+      icon: resource:icons;icon.svg
+  webtrigger:
+    - key: eval-webtrigger
+      function: eval-fn
+      response:
+        type: dynamic
+  llm:
+    - key: precedent-llm
+      model:
+        - claude
+  function:
+    - key: find-decisions-fn
+      handler: index.findDecisionsAction
+    - key: get-decision-fn
+      handler: index.getDecisionAction
+    - key: check-issue-fn
+      handler: index.checkIssueAction
+    - key: check-proposal-fn
+      handler: index.checkTextAction
+    - key: revisit-fn
+      handler: index.revisitAction
+    - key: record-decision-fn
+      handler: index.recordDecisionAction
+    - key: sync-fn
+      handler: index.syncAction
+    - key: issue-created-fn
+      handler: index.onIssueCreated
+    - key: scheduled-sync-fn
+      handler: index.scheduledSync
+      timeoutSeconds: 900
+    - key: resolver-fn
+      handler: index.handler
+    - key: eval-fn
+      handler: index.evalTrigger
+resources:
+  - key: panel
+    path: src/frontend/panel.jsx
+  - key: register
+    path: src/frontend/register.jsx
+  - key: prompts
+    path: prompts
+  - key: icons
+    path: static
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 512
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/905a0737-e5ff-4f13-9710-46bc0a7a89e1
+permissions:
+  scopes:
+    - read:jira-work
+    - write:jira-work
+    - read:jira-user
+    - read:page:confluence
+    - read:space:confluence
+    - search:confluence
+    - read:confluence-content.all
+    - read:confluence-content.permission
+    - storage:app
+    - read:graph:page:confluence
+    - read:graph:user:atlassian
+    - read:graph:team:atlassian
+    - read:app-user-token

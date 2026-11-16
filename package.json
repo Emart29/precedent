@@ -1,0 +1,23 @@
+{
+  "name": "precedent",
+  "version": "1.0.0",
+  "description": "Decision memory for Jira and Confluence: flags work that contradicts what your team already decided, with verified citations.",
+  "main": "src/index.js",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@forge/api": "^8.5.0",
+    "@forge/bridge": "^7.3.0",
+    "@forge/kvs": "^2.1.2",
+    "@forge/llm": "^1.0.10",
+    "@forge/react": "^12.5.0",
+    "@forge/resolver": "^2.0.2",
+    "react": "^18.3.1"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "eval": "node eval/run.js",
+    "lint": "forge lint"
+  }
+}
