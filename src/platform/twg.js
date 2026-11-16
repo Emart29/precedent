@@ -52,3 +52,16 @@ export async function decisionPeople(decision, cloudId, accountId) {
     return { ...empty, error: String(e.message || e).slice(0, 200) };
   }
 }
+
+/** Diagnostics: which Teamwork Graph queries work for the calling user on this site. Logged only. */
+export async function probeGraph(cloudId, accountId, issueId) {
+  const tests = {
+    echo: ['query precedent_echoProbe { echo(myString: "ok") }', {}],
+    userTeams: [TEAMS_QUERY, { user: `ari:cloud:identity::user/${accountId}` }],
+    issueComments: ['query precedent_issueProbe($id: ID!) { jiraWorkItemComments(id: $id, first: 1) { edges { cursor } } }',
+      { id: `ari:cloud:jira:${cloudId}:issue/${issueId}` }],
+  };
+  for (const [name, [q, v]] of Object.entries(tests)) {
+    try { await run(q, v); } catch (e) { console.log(`TWG probe ${name} threw ${e.message}`); }
+  }
+}

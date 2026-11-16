@@ -13,6 +13,7 @@ import { EVAL_CASES } from './data/eval-cases.js';
 import { HOLDOUT_CASES } from './data/eval-holdout.js';
 import { EVAL_RESULTS } from './data/eval-results.js';
 import { chat } from './platform/llm.js';
+import { probeGraph } from './platform/twg.js';
 
 // @forge/resolver is CommonJS; depending on the bundler's interop the class is the default
 // export or nested one level deeper.
@@ -117,6 +118,7 @@ const resolver = new Resolver();
 
 resolver.define('getIssueState', async ({ payload, context }) => {
   const issueKey = payload.issueKey || context.extension?.issue?.key;
+  if (payload.probe) await probeGraph(context.cloudId, context.accountId, context.extension?.issue?.id);
   const [check, responses, visible] = await Promise.all([
     store.getCheck(issueKey), store.responsesFor(issueKey), svc.decisionsFor(),
   ]);
