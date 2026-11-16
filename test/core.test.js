@@ -131,5 +131,7 @@ test('quotes copied from the prompt rendering (with labels) are accepted', () =>
   const work = 'PayRail fees go up to 2.4% from January.';
   const d = { id: 'DEC-1', title: 'Keep PayRail', decision: 'We keep PayRail.', revisitIf: ['PayRail payout fees rise above 2% per transaction', 'Settla gets a licence'], status: 'active' };
   const raw = { findings: [{ id: 'DEC-1', relation: 'revisit_signal', decision_quote: 'Revisit if: PayRail payout fees rise above 2% per transaction; Settla', work_quote: 'PayRail fees go up to 2.4%', explanation: 'Condition met.' }] };
-  assert.equal(verifyFindings(raw, work, [d]).findings.length, 1);
+  const res = verifyFindings(raw, work, [d]);
+  assert.equal(res.findings.length, 1);
+  assert.match(res.findings[0].decisionQuote, /^PayRail payout fees/, 'prompt labels are stripped from the shown quote');
 });

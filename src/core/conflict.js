@@ -95,7 +95,7 @@ export function verifyFindings(raw, workText, candidates) {
     findings.push({
       id: d.id,
       relation: f.relation,
-      decisionQuote: String(f.decision_quote).trim(),
+      decisionQuote: String(f.decision_quote).trim().replace(/^(revisit if|decision|why|alternatives rejected):\s*/i, ''),
       workQuote: String(f.work_quote).trim(),
       explanation: clip(f.explanation || '', 300),
     });
