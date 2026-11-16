@@ -176,7 +176,7 @@ export const handler = resolver.getDefinitions();
 
 // ---------------------------------------------------------------- Evaluation web trigger
 // Developer-only operations, run inside Forge because the LLM is only reachable here:
-//   op=eval (default) a slice of the labelled set · op=sync · op=decisions · op=check&issue=KEY · op=reset
+//   op=eval (default) a slice of the labelled set · op=sync · op=decisions · op=check&issue=KEY · op=people&id=DEC-n&cloud=ID&user=ACCOUNT · op=reset
 // Disabled unless the EVAL_TOKEN environment variable is set: `forge variables set EVAL_TOKEN ...`.
 
 export async function evalTrigger(request) {
@@ -187,6 +187,10 @@ export async function evalTrigger(request) {
   const json = (body) => ({ statusCode: 200, headers: { 'Content-Type': ['application/json'] }, body: JSON.stringify(body) });
   if (op === 'sync') return json(await syncFromConfluence());
   if (op === 'reset') return json(await store.resetAll());
+  if (op === 'people') {
+    const d = await store.getDecision(params.id?.[0] || 'DEC-1');
+    return json(await svc.peopleFor(d, params.cloud?.[0], params.user?.[0]));
+  }
   if (op === 'decisions') return json((await store.allDecisions()).map(svc.summarize));
   if (op === 'check') {
     await onIssueCreated({ issue: { key: params.issue?.[0] } });
