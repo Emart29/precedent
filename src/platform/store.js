@@ -89,3 +89,17 @@ export async function resetAll() {
   }
   return { deleted };
 }
+
+/** Delete decision records that their source mapping no longer points to (duplicates from races). */
+export async function removeOrphans() {
+  let removed = 0;
+  for (const d of await allDecisions()) {
+    if (!d.key) continue;
+    const mapped = await kvs.get(`src:${d.key}`);
+    if (mapped && mapped !== d.id) {
+      await kvs.delete(`dec:${d.id}`);
+      removed += 1;
+    }
+  }
+  return removed;
+}

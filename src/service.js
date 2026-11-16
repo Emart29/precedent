@@ -22,9 +22,18 @@ async function loadDecisions() {
   if (decisions.length) return decisions;
   const last = await store.getMeta('sync');
   if (last && Date.now() - Date.parse(last.at) < 10 * 60 * 1000) return decisions;
+  // Another request may already be syncing (several panels load at once): wait for it.
+  const running = await store.getMeta('syncStarted');
+  if (running && Date.now() - Date.parse(running) < 60 * 1000) {
+    for (let i = 0; i < 15 && !decisions.length; i++) {
+      await new Promise((r) => setTimeout(r, 1000));
+      decisions = await store.allDecisions();
+    }
+    return decisions;
+  }
+  await store.setMeta('syncStarted', new Date().toISOString());
   await syncFromConfluence();
-  decisions = await store.allDecisions();
-  return decisions;
+  return store.allDecisions();
 }
 
 /** Decisions the person may see (defaults to the calling user). */

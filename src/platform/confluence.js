@@ -11,7 +11,7 @@ import { parsePage } from '../core/parse.js';
 import { containsQuote } from '../core/text.js';
 import { parseJson } from '../core/conflict.js';
 import { chat } from './llm.js';
-import { upsertDecision, setMeta } from './store.js';
+import { upsertDecision, setMeta, removeOrphans } from './store.js';
 
 const api = { asApp, asUser };
 
@@ -117,6 +117,9 @@ export async function syncFromConfluence() {
       summary.errors.push(`${id}: ${String(e.message || e).slice(0, 160)}`);
     }
   }
+  // Concurrent first-use syncs can each allocate an id for the same page; keep only the id
+  // that the source mapping points to.
+  summary.duplicatesRemoved = await removeOrphans();
   summary.at = new Date().toISOString();
   summary.ms = Date.now() - started;
   await setMeta('sync', summary);
