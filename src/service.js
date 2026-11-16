@@ -10,10 +10,26 @@ import * as store from './platform/store.js';
 import { visibleTo } from './platform/access.js';
 import { getIssueText, searchRecentIssues } from './platform/jira.js';
 import { decisionPeople } from './platform/twg.js';
+import { syncFromConfluence } from './platform/confluence.js';
+
+/**
+ * All stored decisions. Each Forge installation (Jira, Confluence) has its own storage, so an
+ * installation that has never synced reads Confluence on first use instead of answering from
+ * an empty log. Retried at most every 10 minutes.
+ */
+async function loadDecisions() {
+  let decisions = await store.allDecisions();
+  if (decisions.length) return decisions;
+  const last = await store.getMeta('sync');
+  if (last && Date.now() - Date.parse(last.at) < 10 * 60 * 1000) return decisions;
+  await syncFromConfluence();
+  decisions = await store.allDecisions();
+  return decisions;
+}
 
 /** Decisions the person may see (defaults to the calling user). */
 export async function decisionsFor(accountId) {
-  return visibleTo(await store.allDecisions(), accountId);
+  return visibleTo(await loadDecisions(), accountId);
 }
 
 /** Compact, citation-friendly view of a decision for agents, MCP clients and the UI. */
