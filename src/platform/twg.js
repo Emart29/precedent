@@ -6,6 +6,7 @@
 // (atlassianUserInTeams). Results are permission-filtered by the graph for the calling user.
 
 import { asApp, asUser } from '@forge/api';
+import { kvs } from '@forge/kvs';
 
 const api = { asApp, asUser };
 
@@ -20,14 +21,24 @@ const TEAMS_QUERY = `query precedent_userTeams($user: ID!) {
 
 const users = (conn) => (conn?.edges || []).map((e) => e.node).filter((n) => n?.accountId);
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// The graph sometimes answers "User is not permitted to query this organization" for a query
+// that succeeds moments later, so permission-style errors are retried a few times.
 async function run(query, variables, accountId) {
   const requester = accountId ? api.asUser(accountId) : api.asUser();
-  const res = await requester.requestTeamworkGraph(query, variables, query.match(/query (\w+)/)[1]);
-  const body = await res.json();
-  // Logged so empty results can be diagnosed (missing scopes return empty data, not errors).
-  console.log(`TWG ${query.match(/query (\w+)/)[1]} status=${res.status} ${JSON.stringify(body).slice(0, 600)}`);
-  if (body.errors?.length && !body.data) throw new Error(body.errors[0].message);
-  return body.data || {};
+  const name = query.match(/query (\w+)/)[1];
+  let lastError;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (attempt) await sleep(400 * attempt);
+    const res = await requester.requestTeamworkGraph(query, variables, name);
+    const body = await res.json();
+    if (!body.errors?.length) return body.data || {};
+    lastError = body.errors[0].message;
+    if (!/not permitted/i.test(lastError)) break;
+  }
+  console.warn(`Teamwork Graph ${name} failed: ${lastError}`);
+  throw new Error(lastError);
 }
 
 /**
@@ -37,6 +48,7 @@ export async function decisionPeople(decision, cloudId, accountId) {
   const empty = { owners: [], contributors: [], teams: [] };
   const pageId = decision?.source?.kind === 'confluence' ? decision.source.pageId : null;
   if (!pageId || !cloudId) return empty;
+  const cacheKey = `twg:page:${pageId}`;
   try {
     const data = await run(PEOPLE_QUERY, { page: `ari:cloud:confluence:${cloudId}:page/${pageId}` }, accountId);
     const owners = users(data.confluencePageOwners);
@@ -47,21 +59,14 @@ export async function decisionPeople(decision, cloudId, accountId) {
       const t = await run(TEAMS_QUERY, { user: `ari:cloud:identity::user/${lead.accountId}` }, accountId);
       teams = (t.atlassianUserInTeams?.edges || []).map((e) => e.node).filter((n) => n?.displayName);
     }
-    return { owners, contributors, teams };
+    const people = { owners, contributors, teams, at: new Date().toISOString() };
+    await kvs.set(cacheKey, people);
+    return people;
   } catch (e) {
+    // Fall back to the last good answer (kept for a day) so the panel stays useful.
+    const cached = await kvs.get(cacheKey);
+    if (cached && Date.now() - Date.parse(cached.at) < 24 * 3600 * 1000) return { ...cached, cached: true };
     return { ...empty, error: String(e.message || e).slice(0, 200) };
   }
 }
 
-/** Diagnostics: which Teamwork Graph queries work for the calling user on this site. Logged only. */
-export async function probeGraph(cloudId, accountId, issueId) {
-  const tests = {
-    echo: ['query precedent_echoProbe { echo(myString: "ok") }', {}],
-    userTeams: [TEAMS_QUERY, { user: `ari:cloud:identity::user/${accountId}` }],
-    issueComments: ['query precedent_issueProbe($id: ID!) { jiraWorkItemComments(id: $id, first: 1) { edges { cursor } } }',
-      { id: `ari:cloud:jira:${cloudId}:issue/${issueId}` }],
-  };
-  for (const [name, [q, v]] of Object.entries(tests)) {
-    try { await run(q, v); } catch (e) { console.log(`TWG probe ${name} threw ${e.message}`); }
-  }
-}

@@ -77,7 +77,7 @@ export const getMeta = (name) => kvs.get(`meta:${name}`);
 /** Delete everything Precedent stored (developer reset; not reachable from the UI). */
 export async function resetAll() {
   let deleted = 0;
-  for (const prefix of ['dec:', 'src:', 'check:', 'resp:', 'meta:', 'seq']) {
+  for (const prefix of ['dec:', 'src:', 'check:', 'resp:', 'meta:', 'twg:', 'seq']) {
     let page;
     do {
       page = await kvs.query().where('key', WhereConditions.beginsWith(prefix)).limit(100).getMany();

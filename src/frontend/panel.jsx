@@ -105,7 +105,7 @@ function App() {
     setLoading(true);
     setError(null);
     try {
-      setState(await invoke(fresh ? 'runIssueCheck' : 'getIssueState', { issueKey, probe: !fresh }));
+      setState(await invoke(fresh ? 'runIssueCheck' : 'getIssueState', { issueKey }));
     } catch (e) {
       setError(e.message || String(e));
     } finally {
