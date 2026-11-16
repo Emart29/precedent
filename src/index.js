@@ -132,6 +132,7 @@ resolver.define('runIssueCheck', async ({ payload, context }) => {
 async function enrich(issueKey, check, responses, visible, cloudId) {
   const byId = new Map(visible.map((d) => [d.id, d]));
   const findings = [];
+  console.log(`enrich ${issueKey} cloudId=${cloudId ? 'set' : 'missing'}`);
   for (const f of check?.findings || []) {
     const d = byId.get(f.id);
     if (!d) continue; // the viewer cannot see this decision's page

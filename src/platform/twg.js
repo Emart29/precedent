@@ -24,6 +24,8 @@ async function run(query, variables, accountId) {
   const requester = accountId ? api.asUser(accountId) : api.asUser();
   const res = await requester.requestTeamworkGraph(query, variables, query.match(/query (\w+)/)[1]);
   const body = await res.json();
+  // Logged so empty results can be diagnosed (missing scopes return empty data, not errors).
+  console.log(`TWG ${query.match(/query (\w+)/)[1]} status=${res.status} ${JSON.stringify(body).slice(0, 600)}`);
   if (body.errors?.length && !body.data) throw new Error(body.errors[0].message);
   return body.data || {};
 }
