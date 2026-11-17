@@ -15,7 +15,7 @@ Precedent reads decisions from where they already live (Confluence decision page
 - **Shows who to talk to.** People and teams behind each decision come from the Teamwork Graph.
 - **A conflict is not a veto.** From the issue panel you can link the issue to the decision, go ahead with a written reason, or reopen the decision. Each choice is recorded on the issue.
 
-Built for [Codegeist 2026](https://codegeist2026.devpost.com/) on Atlassian Forge.
+Built for [Codegeist 2026](https://codegeist2026.devpost.com/) on Atlassian Forge. **[Install it](#try-it)** · **[Watch the demo](https://youtu.be/zZdCXIgEDIQ)**
 
 ## Accuracy
 
@@ -69,12 +69,15 @@ New Jira issue / proposal ─► candidate decisions (all, or BM25 top 8) ─►
 
 ## Try it
 
-1. Install the app on a Jira + Confluence site with the installation link from the Codegeist submission.
+**[Install Precedent on your Atlassian site (Jira + Confluence)](https://developer.atlassian.com/console/install/905a0737-e5ff-4f13-9710-46bc0a7a89e1?signature=AYABeIah3n31c1rG9s9t%2BfdhRKUAAAADAAdhd3Mta21zAEthcm46YXdzOmttczp1cy13ZXN0LTI6NzA5NTg3ODM1MjQzOmtleS83MDVlZDY3MC1mNTdjLTQxYjUtOWY5Yi1lM2YyZGNjMTQ2ZTcAuAECAQB4CxqLTo9l4lqXuFjNim1xJM%2Bp%2F3TVP9xHS2BrU5DRRucBpq%2BxlAfREqHeRBqPXnmu7AAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDKHb5p6Lf0ombAWgsQIBEIA755cwaenr40fo0XUUkyZJHbE2JgoPI3ZYC9VozFLAWqowxoKY2L2cYGy7EU1v7zpI7o2lLYgzUWSsof0AB2F3cy1rbXMAS2Fybjphd3M6a21zOmV1LXdlc3QtMTo3MDk1ODc4MzUyNDM6a2V5LzQ2MzBjZTZiLTAwYzMtNGRlMi04NzdiLTYyN2UyMDYwZTVjYwC4AQICAHi9bVMAkme4qVQX1fQHo6ePw3H40A7cGfz7yrmSfBWMXgER%2Bbnzs4plDfr8vBmTnCvwAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMWbWttih%2B2J42wFSLAgEQgDsMWvnDXqn78nfwi2g3mugTavcq5lxDZ%2FgftxmwUGW7tuT2tGVgnkwufadfnbumziifD9JL4yRPW%2FWrrAAHYXdzLWttcwBLYXJuOmF3czprbXM6dXMtZWFzdC0xOjcwOTU4NzgzNTI0MzprZXkvNmMxMjBiYTAtNGNkNS00OTg1LWI4MmUtNDBhMDQ5NTJjYzU3ALgBAgIAeDYASx0XCjkny4iLV6vz%2BKtEGSGT6kdt0QRpkn6D%2FlVEAX3xqiA3MLjMQhoIHD6q3UAAAAB%2BMHwGCSqGSIb3DQEHBqBvMG0CAQAwaAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAwthifj%2FbhYsT%2BjHTUCARCAO1jTuu%2BH%2Bn6eoLGQKrKYO%2Ff6Olu2tCMoMCjy3P5oFkYzRNoD%2Bq0CrAloCW%2FNym%2FS%2FF6m%2F1yQBiaybo%2BhAgAAAAAMAAAQAAAAAAAAAAAAAAAAAP%2Fa2VdIRFYFb42nk1AOvFD%2F%2F%2F%2F%2FAAAAAQAAAAAAAAAAAAAAAQAAADKG82v2rLcKgG3Sd0V8QS4qpWjGs0DDxaTwvQXgt0JL%2F0%2B%2FX8juHcd4kes5ary6V0FhoCX71u5A1XdhJjVlp1Ou58Y%3D&product=jira&product=confluence)** · [Demo video](https://youtu.be/zZdCXIgEDIQ)
+
+1. Open the install link above as a site admin and install it on **both Jira and Confluence**.
 2. In Jira, open **Apps → Precedent decisions**, then either:
    - press **Load sample decisions** (16 decisions for the fictional company Kestrel), or
    - label your own Confluence decision pages `decision` (meeting notes: `meeting-notes`) and press **Sync from Confluence**.
-3. Create an issue such as *"Expose a public GraphQL endpoint for partners"* and watch the comment arrive. Open the **Precedent** panel on the issue to respond.
-4. In Rovo chat, pick **Precedent** and ask *"Did we already decide anything about SMS login codes?"*
+3. Create an issue such as *"Expose a public GraphQL endpoint for partners"*. Within about 15 seconds Precedent comments with the decision it contradicts. Expand **Precedent** in the issue sidebar to respond.
+4. In Rovo chat, pick the **Precedent** agent and ask *"Did we already decide anything about SMS login codes?"*
+5. MCP: in Atlassian Administration → Connected apps → precedent → **Enable tools**, then connect an MCP client to `https://mcp.atlassian.com/forge/905a0737-e5ff-4f13-9710-46bc0a7a89e1` (see [skills/precedent/SKILL.md](skills/precedent/SKILL.md)).
 
 To recreate the demo site's Confluence space with real pages: `node scripts/seed-demo.js` (see the header of that file).
 
